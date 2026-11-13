@@ -29,16 +29,18 @@ const dockItems : DockItemData[] = [
 function App() {
 
   const [selectId, setSelectId] = useState<number | null>(null);
-  const [ActiveCategory, setActiveCategory] = useState<'All' | ProjectCategory>('All');  const [projects, setProjects] = useState<Project[]>([]);
-  const [Loading, setLoading] = useState<boolean>(true);
+  const [activeCategory, setActiveCategory] = useState<'All' | ProjectCategory>('All');  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
    useEffect(() => {
     const fetchProjects = async () => {
       try {
+        setError(null);
         const data = await getProjects();
         setProjects(data);
-        setLoading(false);
       } catch (error) {
+        setError('Failed to fetch projects. Please try again later.');
         console.error('Error fetching projects:', error);
       } finally {
           setLoading(false);
@@ -47,8 +49,8 @@ function App() {
     fetchProjects();
    }, []);
 
-  const filteredProjects = ActiveCategory === 'All' ? projects : projects.filter(
-    (p) => p.tag === ActiveCategory
+  const filteredProjects = activeCategory === 'All' ? projects : projects.filter(
+    (p) => p.tag === activeCategory
   );
 
   const activeProject = projects.find((p) => p.id === selectId);
@@ -61,14 +63,19 @@ function App() {
         
         <FilterBar
         categories={categories}
-        activeCategory={ActiveCategory}
+        activeCategory={activeCategory}
         onSelectCategory={(cat) => setActiveCategory(cat)} />
 
-        {Loading ? (
+        {loading ? (
           <div className="flex items-center justify-center col-span-full h-48 text-zinc-500 font-medium animate-pulse">
-            Loading creating showcase...
+            Loading creative showcase...
             </div>
-        ) : (
+        ) : error ? (
+          <div role="alert" className="p-4 mb-6 text-sm text-red-300 bg-red-950/50 border border-red-500/30 rounded-2xl text-center">
+            {error}
+          </div>
+
+        ):(
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <AnimatePresence>
           {filteredProjects.map( (p) => (
@@ -89,7 +96,7 @@ function App() {
 
         <AnimatePresence>
           {activeProject && (
-            <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backfrop-blur-md">
+            <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
               <div className="absolute inset-0" onClick={() => setSelectId(null)}></div>
               <motion.div layoutId={`card-${activeProject.id}`} 
               className="relative flex flex-col justify-between w-full max-w-lg p-8 bg-zinc-900 rounded-3xl border border-white/10 shadow-2xl z-10">
@@ -106,7 +113,7 @@ function App() {
                 </div>
 
                 <div className="flex items-center justify-end mt-8">
-                  <button onClick={() => setSelectId(null)}
+                  <button type="button" onClick={() => setSelectId(null)}
                     className="px-5 py-2 text-sm font-medium text-white bg-zinc-800 rounded-xl hover:bg-zinc-700 transition-colors cursor-pointer">
                     Close
                   </button>

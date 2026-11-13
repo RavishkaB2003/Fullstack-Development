@@ -18,7 +18,7 @@ export default function Hero(){
                  </span></h1>
             <p className="text-base md:text-lg text-zinc-400 max-w-xl mx-auto"> Curated Bento Grids, Kinetic Physics, and Interactive 3D Work.</p>
             <span className="inline-flex items-center px-4 py-1.5 mb-6 text-xs font-medium text-white bg-zinc-900  rounded-full border border-white/10 shadow-xl mt-10">
-            Avaliable for Creative Dev & 3D Projects
+            Available for Creative Dev & 3D Projects
             </span>
 
 

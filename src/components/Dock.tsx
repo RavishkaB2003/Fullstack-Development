@@ -17,14 +17,14 @@ function DockButton({label, icon:Icon, onClick} : {label:string, icon: LucideIco
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-    <motion.button 
+    <motion.button type="button" onClick={onClick} aria-label={label}
         onHoverStart={ () => setIsHovered(true)}
         onHoverEnd= { () => setIsHovered(false)}
         whileHover={{scale: 1.25, y: -6}}
         whileTap={{scale: 0.95}}
         transition={{type: 'spring', stiffness: 400, damping: 18}}
         className="relative flex items-center justify-center p-3 bg-zinc-800/80 text-zinc-400 rounded-2xl border border-white/5 hover:text-white
-        hover:bg-zinc-700 transition-colors cursor-pointer"> <Icon size={20} onClick={onClick} />
+        hover:bg-zinc-700 transition-colors cursor-pointer"> <Icon size={20} />
 
         <AnimatePresence>
             {isHovered && (
