@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {type Project} from './types/project'
+import { type Project, type ProjectCategory } from './types/project';
 import {getProjects} from './service/ProjectService'
 import BentoCard from './components/BentoCard'
 import FilterBar from './components/FilterBar'
@@ -9,7 +9,14 @@ import Dock, { type DockItemData} from './components/Dock'
 import Hero from './components/Hero'
 
 
-const categories = ['All', 'Web Design', 'Web Development', 'UI/UX Design']
+
+const categories: ('All' | ProjectCategory)[] = [
+  'All',
+  'Web Design',
+  'Web Development',
+  'UI/UX Design',
+  'BackEnd Development',
+];
 
 const dockItems : DockItemData[] = [
   {id: 'home', label: 'Home', icon: Home, onClick: () => console.log('Home clicked')},
@@ -22,8 +29,7 @@ const dockItems : DockItemData[] = [
 function App() {
 
   const [selectId, setSelectId] = useState<number | null>(null);
-  const [ActiveCategory, setActiveCategory] = useState<string>('All');
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [ActiveCategory, setActiveCategory] = useState<'All' | ProjectCategory>('All');  const [projects, setProjects] = useState<Project[]>([]);
   const [Loading, setLoading] = useState<boolean>(true);
 
    useEffect(() => {

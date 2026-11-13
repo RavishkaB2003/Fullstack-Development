@@ -1,4 +1,5 @@
 import {motion} from "framer-motion";
+import type { ProjectCategory } from "../types/project";
 
 
 
@@ -8,7 +9,7 @@ import {motion} from "framer-motion";
 interface BentoCardProps {
     id: number;
     title: string;
-    tag: string;
+    tag: ProjectCategory;
     isSelected? : boolean;
     colSpan ? : string;
     onSelect : () => void;
